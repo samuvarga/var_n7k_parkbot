@@ -1,27 +1,33 @@
 from launch import LaunchDescription
-from launch_ros.actions import Node
 from launch.actions import ExecuteProcess
+from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription([
+        # Indítsd az Ignition Gazebo-t a world-del
         ExecuteProcess(
             cmd=[
-                'gazebo', '--verbose',
-                '-s', 'libgazebo_ros_factory.so',
-                '/home/ajr/ros2_ws/src/var_n7k_parkbot/world/parking_lot.world'
+                'ign', 'gazebo', 
+                '/home/ajr/ros2_ws/src/var_n7k_parkbot/world/parking_lot.sdf',  
+                '--verbose'
             ],
             output='screen'
         ),
+        # Spawn TurtleBot3 Ignition Gazebo-ba
         Node(
-            package='turtlebot3_description',
-            executable='spawn_turtlebot3',
+            package='ros_gz_sim',  # vagy: 'ros_ign_gazebo' régebbi névvel
+            executable='create',
             name='spawn_turtlebot3',
             output='screen',
-            parameters=[{'use_sim_time': True}],
-            arguments=['-x', '0', '-y', '0', '-z', '0', '-Y', '0']
+            arguments=[
+                '-name', 'turtlebot3',
+                '-file', '/opt/ros/humble/share/turtlebot3_description/urdf/turtlebot3_burger.urdf',
+                '-x', '0', '-y', '0', '-z', '0'
+            ]
         ),
+        # Parkolási logika node
         Node(
-            package='parking_logic_node',
+            package='var_n7k_parkbot',
             executable='parking_logic_node',
             name='parking_logic_node',
             output='screen',
