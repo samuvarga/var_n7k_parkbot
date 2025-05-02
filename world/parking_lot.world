@@ -1,0 +1,89 @@
+# Custom Gazebo world for parking lot simulation
+
+<world>
+  <name>ParkingLot</name>
+  <include>
+    <uri>model://sun</uri>
+  </include>
+  <include>
+    <uri>model://ground_plane</uri>
+  </include>
+  
+  <model name="parking_space_1">
+    <pose>0 0 0 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>2 1 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>2 1 0.1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://parking_space/materials/scripts</uri>
+            <name>ParkingSpace</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+
+  <model name="parking_space_2">
+    <pose>3 0 0 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>2 1 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>2 1 0.1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://parking_space/materials/scripts</uri>
+            <name>ParkingSpace</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+
+  <model name="obstacle_1">
+    <pose>1.5 0.5 0 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://obstacle/materials/scripts</uri>
+            <name>Obstacle</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</world>

@@ -23,7 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # 'control_vehicle = var_n7k_parkbot.control_vehicle:main',
+             'parking_logic_node = var_n7k_parkbot.parking_logic_node.parking_logic:main',
         ],
     },
 )

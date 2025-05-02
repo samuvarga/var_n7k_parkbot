@@ -1,0 +1,49 @@
+# This file contains the configuration for RViz to visualize the parking robot's debugging information.
+
+Visualization:
+  - Name: "Robot Model"
+    Type: "RobotModel"
+    Enabled: true
+    Alpha: 1.0
+    Description: "Visualizes the TurtleBot3 model."
+
+  - Name: "LIDAR"
+    Type: "LaserScan"
+    Enabled: true
+    Topic: "/scan"
+    Color: "green"
+    Size: 0.1
+    Description: "Displays LIDAR data."
+
+  - Name: "Target Pose"
+    Type: "Pose"
+    Enabled: true
+    Topic: "/target_pose"
+    Color: "blue"
+    Description: "Visualizes the target parking position."
+
+  - Name: "Path"
+    Type: "Path"
+    Enabled: true
+    Topic: "/path"
+    Color: "red"
+    Description: "Displays the planned path for parking."
+
+Global Options:
+  Fixed Frame: "map"
+  Background Color: [0.0, 0.0, 0.0, 1.0]  # Black background
+
+View:
+  - Name: "Top Down"
+    Type: "Orbit"
+    Distance: 10.0
+    Focal Point: [0.0, 0.0, 0.0]
+    View Angle: 45.0
+
+  - Name: "Side View"
+    Type: "Orbit"
+    Distance: 5.0
+    Focal Point: [0.0, 0.0, 0.0]
+    View Angle: 30.0
+
+# End of RViz configuration for parking robot debugging.
