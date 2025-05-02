@@ -15,14 +15,14 @@ def generate_launch_description():
         ),
         # Spawn TurtleBot3 Ignition Gazebo-ba
         Node(
-            package='ros_gz_sim',  # vagy: 'ros_ign_gazebo' régebbi névvel
+            package='ros_gz_sim',
             executable='create',
             name='spawn_turtlebot3',
             output='screen',
             arguments=[
                 '-name', 'turtlebot3',
-            '-file', '/tmp/turtlebot3.urdf',
-            '-x', '0', '-y', '0', '-z', '0.2'
+                '-file', '/opt/ros/humble/share/turtlebot3_description/urdf/turtlebot3_burger.urdf',
+                '-x', '0', '-y', '0', '-z', '0.1'
             ]
         ),
         # Parkolási logika node
