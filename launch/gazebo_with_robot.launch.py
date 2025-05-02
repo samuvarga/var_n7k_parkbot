@@ -21,8 +21,8 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 '-name', 'turtlebot3',
-                '-file', '/opt/ros/humble/share/turtlebot3_description/urdf/turtlebot3_burger.urdf',
-                '-x', '0', '-y', '0', '-z', '0'
+            '-file', '/tmp/turtlebot3.urdf',
+            '-x', '0', '-y', '0', '-z', '0'
             ]
         ),
         # Parkolási logika node
