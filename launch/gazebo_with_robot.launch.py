@@ -21,9 +21,17 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 '-name', 'turtlebot3',
-                '-file', '/opt/ros/humble/share/turtlebot3_description/urdf/turtlebot3_burger.urdf',
+                '-file', '/home/ajr/ros2_ws/src/var_n7k_parkbot/robot_description/turtlebot3_burger.urdf',
                 '-x', '0', '-y', '0', '-z', '0.1'
             ]
+        ),
+        # Bridge a /cmd_vel topicra (ROS <-> Ignition)
+        Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='cmd_vel_bridge',
+            output='screen',
+            arguments=['/model/turtlebot3/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist']
         ),
         # Parkolási logika node
         Node(
