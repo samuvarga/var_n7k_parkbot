@@ -22,7 +22,7 @@ def generate_launch_description():
             arguments=[
                 '-name', 'turtlebot3',
             '-file', '/tmp/turtlebot3.urdf',
-            '-x', '0', '-y', '0', '-z', '0'
+            '-x', '0', '-y', '0', '-z', '0.2'
             ]
         ),
         # Parkolási logika node

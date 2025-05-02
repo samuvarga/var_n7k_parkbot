@@ -30,7 +30,7 @@
     <parent link="base_link"/>
     <child link="wheel_left"/>
     <origin xyz="${wheel_separation/2} 0 0" rpy="0 0 0"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="0 1 0"/>
     <limit effort="10" lower="-3.14" upper="3.14" velocity="1"/>
   </joint>
 
@@ -38,7 +38,7 @@
     <parent link="base_link"/>
     <child link="wheel_right"/>
     <origin xyz="-${wheel_separation/2} 0 0" rpy="0 0 0"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="0 1 0"/>
     <limit effort="10" lower="-3.14" upper="3.14" velocity="1"/>
   </joint>
 
@@ -72,7 +72,21 @@
     </collision>
   </link>
 
-  <!-- SENSORS NÉLKÜL! Ha kell, később bővítsd -->
-  <!-- <xacro:include filename="$(find turtlebot3_description)/urdf/sensors.xacro"/> -->
+  <!-- Diff drive plugin hozzáadása -->
+  <gazebo>
+    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+      </ros>
+      <update_rate>50</update_rate>
+      <left_wheel>wheel_left</left_wheel>
+      <right_wheel>wheel_right</right_wheel>
+      <wheel_separation>${wheel_separation}</wheel_separation>
+      <wheel_radius>${wheel_radius}</wheel_radius>
+      <command_topic>/cmd_vel</command_topic>
+      <odometry_topic>/odom</odometry_topic>
+      <publish_tf>true</publish_tf>
+    </plugin>
+  </gazebo>
 
 </robot>

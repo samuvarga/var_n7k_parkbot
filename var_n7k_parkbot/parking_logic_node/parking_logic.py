@@ -1,68 +1,77 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
+import math
 
 class ParkingLogicNode(Node):
     def __init__(self):
         super().__init__('parking_logic_node')
-        
-        # Subscribers
-        self.odom_subscriber = self.create_subscription(
-            Odometry,
-            '/odom',
-            self.odom_callback,
-            10
-        )
-        
-        self.lidar_subscriber = self.create_subscription(
-            LaserScan,
-            '/scan',
-            self.lidar_callback,
-            10
-        )
-        
-        # Publisher
-        self.target_pose_publisher = self.create_publisher(
-            PoseStamped,
-            '/target_pose',
-            10
-        )
-        
-        # Initialize variables
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+
         self.current_pose = None
         self.lidar_data = None
+        self.timer = self.create_timer(0.1, self.park_logic)
+
+        # Parkolóhely keresési paraméterek
+        self.target_found = False
+        self.target_distance = 1.5  # ennyi méterre parkoljon le
+        self.obstacle_threshold = 0.5  # ha közelebb van akadály, megáll
 
     def odom_callback(self, msg):
         self.current_pose = msg.pose.pose
-        self.get_logger().info(f'Current Pose: {self.current_pose}')
 
     def lidar_callback(self, msg):
         self.lidar_data = msg
-        self.get_logger().info('LIDAR data received')
 
-    def park_robot(self):
-        # Implement parking logic here
-        if self.current_pose and self.lidar_data:
-            # Example logic for parking maneuver
-            target_pose = PoseStamped()
-            target_pose.header.frame_id = 'map'
-            target_pose.header.stamp = self.get_clock().now().to_msg()
-            target_pose.pose.position.x = self.current_pose.position.x + 1.0  # Example offset
-            target_pose.pose.position.y = self.current_pose.position.y
-            target_pose.pose.orientation = self.current_pose.orientation
-            
-            self.target_pose_publisher.publish(target_pose)
-            self.get_logger().info(f'Sending target pose: {target_pose}')
+    def park_logic(self):
+        if self.current_pose is None or self.lidar_data is None:
+            return
+
+        # LIDAR: előre néző sugarak (középső 20 fok)
+        ranges = self.lidar_data.ranges
+        angle_min = self.lidar_data.angle_min
+        angle_increment = self.lidar_data.angle_increment
+        num_ranges = len(ranges)
+        center_idx = num_ranges // 2
+        window = int(math.radians(20) / angle_increment)
+        front_ranges = ranges[center_idx - window//2 : center_idx + window//2]
+
+        # Szabad hely keresése
+        min_front = min(front_ranges)
+        self.get_logger().info(f'Legközelebbi akadály elöl: {min_front:.2f} m')
+
+        twist = Twist()
+
+        if not self.target_found:
+            # Ha elöl legalább target_distance szabad, akkor ott a parkolóhely
+            if min_front > self.target_distance:
+                self.get_logger().info('Szabad parkolóhelyet találtam, odamegyek!')
+                twist.linear.x = 0.3
+                self.target_found = True
+            else:
+                # Ha akadály van, forduljon el
+                twist.angular.z = 0.5
+        else:
+            # Ha már parkolóhelyen vagyunk, lassan előre, amíg közel nem érünk valamihez
+            if min_front > self.obstacle_threshold:
+                twist.linear.x = 0.15
+            else:
+                self.get_logger().info('Beparkoltam!')
+                twist.linear.x = 0.0
+                twist.angular.z = 0.0
+                self.target_found = False  # újra kereshet parkolóhelyet, ha szeretnéd
+
+        self.cmd_vel_pub.publish(twist)
 
 def main(args=None):
     rclpy.init(args=args)
-    parking_logic_node = ParkingLogicNode()
-    
-    rclpy.spin(parking_logic_node)
-    
-    parking_logic_node.destroy_node()
+    node = ParkingLogicNode()
+    rclpy.spin(node)
+    node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
