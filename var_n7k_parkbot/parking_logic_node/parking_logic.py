@@ -8,8 +8,8 @@ import math
 class ParkingLogicNode(Node):
     def __init__(self):
         super().__init__('parking_logic_node')
-        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
-        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, '/model/turtlebot3/odometry', self.odom_callback, 10)
+        self.lidar_sub = self.create_subscription(LaserScan, '/model/turtlebot3/scan', self.lidar_callback, 10)
         self.cmd_vel_pub = self.create_publisher(Twist, '/model/turtlebot3/cmd_vel', 10)
 
         self.current_pose = None
