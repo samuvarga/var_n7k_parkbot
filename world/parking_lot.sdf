@@ -8,7 +8,6 @@
     <include>
       <uri>model://sun</uri>
     </include>
-    
 
     <light name="default_light" type="directional">
       <cast_shadows>true</cast_shadows>
@@ -31,7 +30,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>100 100</size>
+              <size>20 20</size>
             </plane>
           </geometry>
         </collision>
@@ -39,7 +38,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>100 100</size>
+              <size>20 20</size>
             </plane>
           </geometry>
           <material>
@@ -50,44 +49,22 @@
       </link>
     </model>
 
-    <model name="parking_space_1">
-      <pose>0 0 0 0 0 0</pose>
+    <!-- Bal fal (rövidebb és közelebb) -->
+    <model name="wall_left">
+      <static>true</static>
+      <pose>-0.45 -1.1 0.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>2 1 0.1</size>
+              <size>0.1 1.2 0.5</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>2 1 0.1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.8 0.2 1</ambient>
-            <diffuse>0.2 0.8 0.2 1</diffuse>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="parking_space_2">
-      <pose>3 0 0 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>2 1 0.1</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>2 1 0.1</size>
+              <size>0.1 1.2 0.5</size>
             </box>
           </geometry>
           <material>
@@ -98,28 +75,57 @@
       </link>
     </model>
 
-    <model name="obstacle_1">
-      <pose>1.5 0.5 0 0 0 0</pose>
+    <!-- Jobb fal (rövidebb és közelebb) -->
+    <model name="wall_right">
+      <static>true</static>
+      <pose>0.45 -1.1 0.25 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
             <box>
-              <size>0.5 0.5 0.5</size>
+              <size>0.1 1.2 0.5</size>
             </box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <box>
-              <size>0.5 0.5 0.5</size>
+              <size>0.1 1.2 0.5</size>
             </box>
           </geometry>
           <material>
-            <ambient>0.8 0.2 0.2 1</ambient>
-            <diffuse>0.8 0.2 0.2 1</diffuse>
+            <ambient>0.2 0.8 0.2 1</ambient>
+            <diffuse>0.2 0.8 0.2 1</diffuse>
           </material>
         </visual>
       </link>
     </model>
+
+    <!-- Hátulsó fal (U alja, rövidebb) -->
+    <model name="wall_back">
+      <static>true</static>
+      <pose>0 -1.7 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.0 0.1 0.5</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.0 0.1 0.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.2 1</ambient>
+            <diffuse>0.8 0.8 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
   </world>
 </sdf>
