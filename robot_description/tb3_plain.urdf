@@ -171,5 +171,6 @@
       <wheel_radius>0.033</wheel_radius>
       <topic>/model/turtlebot3/cmd_vel</topic>
     </plugin>
+    <plugin name="lidar_plugin_gpu" filename="libignition-sensors6-gpu_lidar.so"/>
   </gazebo>
 </robot>

@@ -33,6 +33,21 @@ def generate_launch_description():
             output='screen',
             arguments=['/model/turtlebot3/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist']
         ),
+        # Bridge az odometry és scan topicokra (ROS <-> Ignition)
+        Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='scan_bridge',
+            output='screen',
+            arguments=['/model/turtlebot3/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan']
+        ),
+        Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='odom_bridge',
+            output='screen',
+            arguments=['/model/turtlebot3/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry']
+        ),
         # Parkolási logika node
         Node(
             package='var_n7k_parkbot',
