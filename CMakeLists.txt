@@ -19,8 +19,8 @@ install(
 )
 
 install(
-  DIRECTORY config/
-  DESTINATION share/${PROJECT_NAME}/config
+  PROGRAMS var_n7k_parkbot/parking_logic_node/parking_logic.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
