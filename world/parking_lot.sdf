@@ -23,9 +23,21 @@
       <direction>-0.5 0.5 -1</direction>
     </light>
 
+    <!-- Ground plane (plane geometry, inertia ok Gazebo Classic-hoz) -->
     <model name="ground_plane">
       <static>true</static>
       <link name="ground_plane_link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <iyy>1.0</iyy>
+            <izz>1.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <plane>
@@ -49,11 +61,22 @@
       </link>
     </model>
 
-    <!-- Bal fal (rövidebb és közelebb) -->
+    <!-- Left wall -->
     <model name="wall_left">
       <static>true</static>
       <pose>-0.45 -1.1 0.25 0 0 0</pose>
       <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <iyy>1.0</iyy>
+            <izz>1.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <box>
@@ -75,11 +98,22 @@
       </link>
     </model>
 
-    <!-- Jobb fal (rövidebb és közelebb) -->
+    <!-- Right wall -->
     <model name="wall_right">
       <static>true</static>
       <pose>0.45 -1.1 0.25 0 0 0</pose>
       <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <iyy>1.0</iyy>
+            <izz>1.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <box>
@@ -101,11 +135,22 @@
       </link>
     </model>
 
-    <!-- Hátulsó fal (U alja, rövidebb) -->
+    <!-- Back wall -->
     <model name="wall_back">
       <static>true</static>
       <pose>0 -1.7 0.25 0 0 0</pose>
       <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <iyy>1.0</iyy>
+            <izz>1.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <box>
@@ -127,11 +172,22 @@
       </link>
     </model>
 
-    <!-- Teszt fal közvetlenül a robot elé -->
+    <!-- Test wall in front of robot -->
     <model name="wall_front_test">
       <static>true</static>
       <pose>0.25 0 0.25 0 0 0</pose>
       <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <iyy>0.01</iyy>
+            <izz>0.01</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
         <collision name="collision">
           <geometry>
             <box>

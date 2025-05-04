@@ -7,9 +7,8 @@ def generate_launch_description():
         # Indítsd az Ignition Gazebo-t a world-del
         ExecuteProcess(
             cmd=[
-                'gz', 'sim',
-                '/home/ajr/ros2_ws/src/var_n7k_parkbot/world/parking_lot.sdf',
-                '--verbose'
+                'ign', 'gazebo',
+                '/home/ajr/ros2_ws/src/var_n7k_parkbot/world/parking_lot.sdf'
             ],
             output='screen'
         ),
