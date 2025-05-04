@@ -45,7 +45,7 @@ def generate_launch_description():
             executable='parameter_bridge',
             name='points_bridge',
             output='screen',
-            arguments=['/model/turtlebot3/scan@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked']
+            arguments=['/model/turtlebot3/scan@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked']
         ),
         # Parkolási logika node
         Node(
