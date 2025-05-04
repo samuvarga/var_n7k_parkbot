@@ -8,7 +8,7 @@ Visualization:
     Description: "Visualizes the TurtleBot3 model."
 
   - Name: "LIDAR"
-    Type: "LaserScan"
+    Type: "PointCloud2"
     Enabled: true
     Topic: "/scan"
     Color: "green"

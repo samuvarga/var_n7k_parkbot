@@ -20,8 +20,8 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 '-name', 'turtlebot3',
-                '-file', '/home/ajr/ros2_ws/src/var_n7k_parkbot/robot_description/tb3_plain.urdf',
-                '-x', '0', '-y', '0', '-z', '0.1'
+                '-file', '/home/ajr/ros2_ws/src/var_n7k_parkbot/robot_description/tb3_plain.sdf',
+                '-x', '0', '-y', '0', '-z', '0.2'
             ]
         ),
         # Bridge a /cmd_vel topicra (ROS <-> Ignition)
