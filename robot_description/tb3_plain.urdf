@@ -176,7 +176,7 @@
     <sensor name="gpu_lidar" type="gpu_lidar">
       <topic>/model/turtlebot3/scan</topic>
       <frame>base_scan</frame>
-      <update_rate>5</update_rate>
+      <update_rate>20</update_rate>
       <pose>0 0 0.1 0 0 0</pose>
       <ray>
         <scan>
