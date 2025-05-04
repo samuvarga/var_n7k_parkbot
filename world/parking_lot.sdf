@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
-<sdf version="1.7">
+<sdf version="1.8">
   <world name="ParkingLot">
     <!-- Sensors rendszer plugin IGNITION GAZEBO-hoz -->
-    <plugin name="ignition::gazebo::systems::Sensors" filename="libignition-gazebo-sensors-system.so"/>
-
+    <!--<plugin name="ignition::gazebo::systems::Sensors" filename="libignition-gazebo-sensors-system.so"/>-->
+   <!-- <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>-->
     <scene>
       <ambient>0.8 0.8 0.8 1</ambient>
       <background>0.8 0.8 0.8 1</background>
