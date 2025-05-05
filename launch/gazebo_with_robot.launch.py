@@ -30,17 +30,17 @@ def generate_launch_description():
     )
 
     # Spawn TurtleBot3
-    spawn_robot = Node(
-        package='ros_gz_sim',
-        executable='create',
-        name='spawn_turtlebot3',
-        output='screen',
-        arguments=[
-            '-name', 'turtlebot3',
-            '-file', sdf_file,
-            '-x', '0', '-y', '0', '-z', '0.2'
-        ]
-    )
+#    spawn_robot = Node(
+#        package='ros_gz_sim',
+#        executable='create',
+#        name='spawn_turtlebot3',
+#        output='screen',
+#        arguments=[
+#            '-name', 'turtlebot3',
+#            '-file', sdf_file,
+#            '-x', '0', '-y', '0', '-z', '0.2'
+#        ]
+#    )
 
     # Bridge-ek
     cmd_vel_bridge = Node(
@@ -78,7 +78,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim,
-        spawn_robot,
+       # spawn_robot,
         cmd_vel_bridge,
         odom_bridge,
         points_bridge,

@@ -1,14 +1,30 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
   <world name="ParkingLot">
-    <!-- Pluginok (megtartva a gamma.sdf-ből) -->
+    <!-- Sensors rendszer plugin IGNITION GAZEBO-hoz -->
     <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"/>
     <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
-      <render_engine>ogre2</render_engine>
+     <!--  <render_engine>ogre2</render_engine>   -->
     </plugin>
-    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster"/>
-    <plugin filename="ignition-gazebo-user-commands-system" name="ignition::gazebo::systems::UserCommands"/>
-    <!-- Saját ground plane -->
+    <scene>
+      <ambient>0.8 0.8 0.8 1</ambient>
+      <background>0.8 0.8 0.8 1</background>
+    </scene>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <light name="default_light" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+      </attenuation>
+    </light>
+
+    <!-- Ground plane (plane geometry, inertia ok Gazebo Classic-hoz) -->
     <model name="ground_plane">
       <static>true</static>
       <link name="ground_plane_link">
@@ -45,6 +61,7 @@
         </visual>
       </link>
     </model>
+
     <!-- Left wall -->
     <model name="wall_left">
       <static>true</static>
@@ -81,6 +98,7 @@
         </visual>
       </link>
     </model>
+
     <!-- Right wall -->
     <model name="wall_right">
       <static>true</static>
@@ -117,6 +135,7 @@
         </visual>
       </link>
     </model>
+
     <!-- Back wall -->
     <model name="wall_back">
       <static>true</static>
@@ -153,6 +172,7 @@
         </visual>
       </link>
     </model>
+
     <!-- Test wall in front of robot -->
     <model name="wall_front_test">
       <static>true</static>
@@ -189,25 +209,6 @@
         </visual>
       </link>
     </model>
-    <!-- TurtleBot3 model (gamma helyett) -->
-    <include>
-      <uri>file:///home/ajr/ros2_ws/install/var_n7k_parkbot/share/var_n7k_parkbot/robot_description/tb3_plain.sdf</uri>
-      <name>turtlebot3</name>
-      <pose>0 0 0.2 0 0 0</pose>
-    </include>
-    <!-- Napfény -->
-    <light name="sun" type="directional">
-      <cast_shadows>true</cast_shadows>
-      <pose>0 0 10 0 0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <attenuation>
-        <range>1000</range>
-        <constant>0.9</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <direction>-0.5 0.1 -0.9</direction>
-    </light>
+
   </world>
 </sdf>
