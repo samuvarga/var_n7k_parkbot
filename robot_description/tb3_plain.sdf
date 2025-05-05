@@ -1,5 +1,5 @@
 <sdf version='1.8'>
-  <model name='turtlebot3_burger'>
+  <model name='turtlebot3'>
     <link name='base_footprint'>
       <inertial>
         <pose>-0.00429 0 0.030734 0 -0 0</pose>
