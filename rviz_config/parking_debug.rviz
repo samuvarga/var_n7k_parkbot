@@ -10,7 +10,7 @@ Visualization:
   - Name: "LIDAR"
     Type: "PointCloud2"
     Enabled: true
-    Topic: "/scan"
+    Topic: "model/turtlebot3/scan"
     Color: "green"
     Size: 0.1
     Description: "Displays LIDAR data."
