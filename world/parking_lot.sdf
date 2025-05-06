@@ -156,7 +156,7 @@
         </visual>
       </link>
     </model>
-    <!-- Test wall in front of robot -->
+    <!-- Test wall in front of robot 
     <model name="wall_front_test">
       <static>true</static>
       <pose>0.25 0 0.25 0 0 0</pose>
@@ -192,7 +192,7 @@
         </visual>
       </link>
     </model>
-
+-->
     <!-- TurtleBot3 model explicit <model> blokkban, pluginokkal -->
     <model name="turtlebot3">
       <pose>0 0 0.2 0 0 0</pose>

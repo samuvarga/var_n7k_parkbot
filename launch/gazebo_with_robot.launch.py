@@ -108,7 +108,7 @@ def generate_launch_description():
         odom_bridge,
         points_bridge,
         robot_state_publisher,
-        parking_logic_node,
         rviz_node,
-        static_tf_ouster
+        static_tf_ouster,
+        parking_logic_node
     ])
