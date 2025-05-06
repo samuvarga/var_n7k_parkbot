@@ -44,6 +44,7 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': True},
             {'robot_description': robot_desc},
+            {'frame_prefix': 'turtlebot3/'}
         ]
     )
 

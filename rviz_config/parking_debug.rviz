@@ -137,9 +137,7 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base_footprint:
-          Value: true
-        ouster_link:
+        turtlebot3/base_footprint:
           Value: true
         turtlebot3/ouster_link:
           Value: true
@@ -151,18 +149,16 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          ouster_link:
-            {}
-        turtlebot3/ouster_link:
-          turtlebot3/ouster_link/ouster:
-            {}
+        turtlebot3/base_footprint:
+          turtlebot3/ouster_link:
+            turtlebot3/ouster_link/ouster:
+              {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: turtlebot3/ouster_link/ouster
+    Fixed Frame: turtlebot3/base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -212,18 +208,18 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.031171604990959167
-        Y: 0.059574197977781296
-        Z: 0.12662850320339203
+        X: 0.17249555885791779
+        Y: 0.2703215181827545
+        Z: -0.11934108287096024
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4503980875015259
+      Pitch: 0.17039814591407776
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.9553989171981812
+      Yaw: 1.6453990936279297
     Saved: ~
 Window Geometry:
   Displays:
@@ -241,5 +237,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 371
-  Y: 379
+  X: 339
+  Y: 347
