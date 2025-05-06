@@ -29,18 +29,19 @@ def generate_launch_description():
         ])}.items(),
     )
 
-    # Spawn TurtleBot3
-#    spawn_robot = Node(
-#        package='ros_gz_sim',
-#        executable='create',
-#        name='spawn_turtlebot3',
-#        output='screen',
-#        arguments=[
-#            '-name', 'turtlebot3',
-#            '-file', sdf_file,
-#            '-x', '0', '-y', '0', '-z', '0.2'
-#        ]
-#    )
+    with open(sdf_file, 'r') as infp:
+        robot_desc = infp.read()
+
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='both',
+        parameters=[
+            {'use_sim_time': True},
+            {'robot_description': robot_desc},
+        ]
+    )
 
     # Bridge-ek
     cmd_vel_bridge = Node(
@@ -78,9 +79,9 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim,
-       # spawn_robot,
         cmd_vel_bridge,
         odom_bridge,
         points_bridge,
+        robot_state_publisher, 
         parking_logic_node
     ])
