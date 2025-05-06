@@ -29,5 +29,5 @@ source ~/ros2_ws/install/setup.bash
 </details>
 
 ``` r
-ros2 launch var_n7k_parkbot launch_example1.launch.py
+ros2 launch var_n7k_parkbot gazebo_with_robot.launch.py
 ```
