@@ -194,6 +194,23 @@
       <uri>file:///home/ajr/ros2_ws/install/var_n7k_parkbot/share/var_n7k_parkbot/robot_description/tb3_plain.sdf</uri>
       <name>turtlebot3</name>
       <pose>0 0 0.2 0 0 0</pose>
+      <plugin
+        filename="ignition-gazebo-joint-state-publisher-system"
+        name="ignition::gazebo::systems::JointStatePublisher"/>
+      <plugin
+        filename="ignition-gazebo-pose-publisher-system"
+        name="ignition::gazebo::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <static_publisher>true</static_publisher>
+        <static_update_frequency>1</static_update_frequency>
+      </plugin>
+      <plugin
+        filename="ignition-gazebo-odometry-publisher-system"
+        name="ignition::gazebo::systems::OdometryPublisher">
+        <odom_frame>odom</odom_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+      </plugin>
     </include>
     <!-- Napfény -->
     <light name="sun" type="directional">

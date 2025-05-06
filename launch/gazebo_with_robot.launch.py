@@ -18,6 +18,9 @@ def generate_launch_description():
     # SDF robot file path
     sdf_file = os.path.join(pkg_var_n7k_parkbot, 'robot_description', 'tb3_plain.sdf')
 
+    # RViz config file path
+    rviz_config_file = os.path.join(pkg_var_n7k_parkbot, 'rviz', 'parking_debug.rviz')
+
     # Gazebo world indítása
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -77,11 +80,22 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}]
     )
 
+    # RViz node
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': True}]
+    )
+
     return LaunchDescription([
         gz_sim,
         cmd_vel_bridge,
         odom_bridge,
         points_bridge,
-        robot_state_publisher, 
-        parking_logic_node
+        robot_state_publisher,
+        parking_logic_node,
+        rviz_node
     ])
