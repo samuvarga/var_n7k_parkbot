@@ -9,6 +9,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
 from launch_ros.actions import Node
+from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     # Setup project paths
@@ -19,7 +20,7 @@ def generate_launch_description():
     sdf_file = os.path.join(pkg_var_n7k_parkbot, 'robot_description', 'tb3_plain.sdf')
 
     # RViz config file path
-    rviz_config_file = os.path.join(pkg_var_n7k_parkbot, 'rviz', 'parking_debug.rviz')
+    rviz_config_file = os.path.join(pkg_var_n7k_parkbot, 'rviz_config', 'parking_debug.rviz')
 
     # Gazebo world indítása
     gz_sim = IncludeLaunchDescription(
@@ -68,7 +69,7 @@ def generate_launch_description():
         executable='parameter_bridge',
         name='points_bridge',
         output='screen',
-        arguments=['/model/turtlebot3/scan@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked']
+        arguments=['/model/turtlebot3/scan/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked']
     )
 
     # Parkolási logika node
@@ -90,6 +91,16 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}]
     )
 
+    # Statikus TF publisher node a lidar frame-hez
+    static_tf_ouster = ExecuteProcess(
+        cmd=[
+            'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
+            '0', '0', '0', '0', '0', '0',
+            'turtlebot3/ouster_link', 'turtlebot3/ouster_link/ouster'
+        ],
+        output='screen'
+    )
+
     return LaunchDescription([
         gz_sim,
         cmd_vel_bridge,
@@ -97,5 +108,6 @@ def generate_launch_description():
         points_bridge,
         robot_state_publisher,
         parking_logic_node,
-        rviz_node
+        rviz_node,
+        static_tf_ouster
     ])

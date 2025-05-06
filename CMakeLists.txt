@@ -19,6 +19,11 @@ install(
 )
 
 install(
+  DIRECTORY rviz_config/
+  DESTINATION share/${PROJECT_NAME}/rviz_config
+)
+
+install(
   PROGRAMS var_n7k_parkbot/parking_logic_node/parking_logic.py
   DESTINATION lib/${PROJECT_NAME}
 )
