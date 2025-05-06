@@ -199,8 +199,8 @@
             <vertical>
               <samples>16</samples>
               <resolution>1</resolution>
-              <min_angle>-1</min_angle>
-              <max_angle>1</max_angle>
+              <min_angle>-0.4</min_angle>
+              <max_angle>0.4</max_angle>
             </vertical>
           </scan>
           <range>

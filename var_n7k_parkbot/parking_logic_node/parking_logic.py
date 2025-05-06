@@ -35,6 +35,12 @@ class ParkingLogicNode(Node):
         min_right_side = float('inf')
         for p in pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True):
             x, y, z = p
+            # Szűrd ki a robot testének dobozát
+            if -0.5 < x < 0.5 and -0.5 < y < 0.5:
+                continue
+            # Csak a -0.2-nél nagyobb z értékeket engedd át
+            if z < -0.2:
+                continue
             # Előre néző sáv
             if x > 0 and abs(y) < 0.2:
                 min_front = min(min_front, x)
@@ -67,22 +73,16 @@ class ParkingLogicNode(Node):
         twist = Twist()
 
         if not self.target_found:
-            # Eredeti előre keresés
-            if (min_front is not None and min_left is not None and min_right is not None and
-                min_front > self.target_distance and
-                min_left < 0.5 and min_right < 0.5):
-                self.get_logger().info('U alakú parkolóhelyet találtam előre, odamegyek!')
-                twist.linear.x = 0.3
+            # Csak jobbra keresünk U alakú parkolóhelyet
+            if min_right_side is not None and min_right_side > self.target_distance:
+                self.get_logger().info('Jobbra U alakú parkolóhelyet találtam, odafordulok!')
+                twist.angular.z = -0.5
                 self.target_found = True
-            # Jobbra keresés
-            elif (min_right_front is not None and min_right_side is not None and
-                  min_right_front > self.target_distance and min_right_side < 0.5):
-                self.get_logger().info('U alakú parkolóhelyet találtam jobbra, odafordulok!')
-                twist.angular.z = -0.5  # Forduljon jobbra
             else:
                 twist.angular.z = 0.5  # Keres tovább
         else:
-            if min_front > self.obstacle_threshold:
+            # Parkolás előre, amíg akadály nincs előtte
+            if min_front is not None and min_front > self.obstacle_threshold:
                 twist.linear.x = 0.15
             else:
                 self.get_logger().info('Beparkoltam!')
