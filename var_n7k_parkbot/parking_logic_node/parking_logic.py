@@ -9,6 +9,9 @@ import math
 import numpy as np
 import sklearn.cluster
 from visualization_msgs.msg import Marker, MarkerArray
+import warnings
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 class ParkingLogicNode(Node):
     def __init__(self):
@@ -20,15 +23,20 @@ class ParkingLogicNode(Node):
 
         self.current_pose = None
         self.lidar_data = None
-        self.timer = self.create_timer(0.1, self.park_logic)
+        #teszt timer
+        self.test_timer = self.create_timer(0.5, lambda: self.get_logger().info('TIMER TESZT FUT!'))
 
         self.parking_detected = False
         self.turning_timer = None
 
         self.get_logger().info('ParkingLogicNode init kész, timer elindítva')
         self.get_logger().info('Timer létrejött, park_logic timer callback beállítva')
+        # self.get_logger().info(f'TIMER OBJEKTUM: {self.timer}')
 
         self.lidar_callback_count = 0
+
+        # MINDEN inicializáció után:
+        self.park_logic_timer = self.create_timer(0.2, self.park_logic)
  
         # --- TESZT: robot folyamatosan forogjon indulás után ---
         # twist = Twist()
@@ -39,7 +47,7 @@ class ParkingLogicNode(Node):
 
     def odom_callback(self, msg):
         self.current_pose = msg.pose.pose
-        # self.get_logger().info(f'odom_callback: {self.current_pose}')
+        #self.get_logger().info(f'odom_callback: {self.current_pose}')
 
     def lidar_callback(self, msg):
         self.lidar_callback_count += 1
@@ -88,7 +96,6 @@ class ParkingLogicNode(Node):
 
         # U-alakú parkoló detektálásához szükséges értékek eltárolása
         right_points = points[(points[:,1] < -0.6) & (np.abs(points[:,0]) < 0.6)]
-        self.get_logger().info(f'right_points: {len(right_points)}')
         entrance_points = points[(points[:,0] > 0.6) & (np.abs(points[:,1]) < 0.6)]
         back_points = points[(points[:,0] < -0.4) & (np.abs(points[:,1]) < 0.6)]
         self.right_points_len = len(right_points)
@@ -119,7 +126,8 @@ class ParkingLogicNode(Node):
                     or np.any(np.abs(cluster_points) > 1e3)  # extrém outlierek kizárása
                 ):
                     continue
-                centroid = np.mean(cluster_points, axis=0)
+                centroid_xy = np.mean(cluster_points[:, :2].astype(np.float64), axis=0)
+                centroid = np.array([centroid_xy[0], centroid_xy[1], 0.1])
                 # Zöld gömb a centroidhoz (marad)
                 marker = Marker()
                 marker.header.frame_id = "turtlebot3/base_footprint"
@@ -130,10 +138,10 @@ class ParkingLogicNode(Node):
                 marker.action = Marker.ADD
                 marker.pose.position.x = float(centroid[0])
                 marker.pose.position.y = float(centroid[1])
-                marker.pose.position.z = 0.1
-                marker.scale.x = 0.15
-                marker.scale.y = 0.15
-                marker.scale.z = 0.15
+                marker.pose.position.z = float(centroid[2])
+                marker.scale.x = 0.2
+                marker.scale.y = 0.2
+                marker.scale.z = 0.2
                 marker.color.a = 1.0
                 marker.color.r = 0.0
                 marker.color.g = 1.0
@@ -141,25 +149,25 @@ class ParkingLogicNode(Node):
                 marker_array.markers.append(marker)
 
                 # cyan kis gömbök a klaszter pontjaira
-                for j, pt in enumerate(cluster_points):
-                    pt_marker = Marker()
-                    pt_marker.header.frame_id = "turtlebot3/base_footprint"
-                    pt_marker.header.stamp = self.get_clock().now().to_msg()
-                    pt_marker.ns = f"cluster_points_{cluster_id}"
-                    pt_marker.id = j
-                    pt_marker.type = Marker.SPHERE
-                    pt_marker.action = Marker.ADD
-                    pt_marker.pose.position.x = float(pt[0])
-                    pt_marker.pose.position.y = float(pt[1])
-                    pt_marker.pose.position.z = 0.05
-                    pt_marker.scale.x = 0.04
-                    pt_marker.scale.y = 0.04
-                    pt_marker.scale.z = 0.04
-                    pt_marker.color.a = 1.0
-                    pt_marker.color.r = 0.0
-                    pt_marker.color.g = 1.0
-                    pt_marker.color.b = 1.0
-                    marker_array.markers.append(pt_marker)
+                # for j, pt in enumerate(cluster_points):
+                #     pt_marker = Marker()
+                #     pt_marker.header.frame_id = "turtlebot3/base_footprint"
+                #     pt_marker.header.stamp = self.get_clock().now().to_msg()
+                #     pt_marker.ns = f"cluster_points_{cluster_id}"
+                #     pt_marker.id = j
+                #     pt_marker.type = Marker.SPHERE
+                #     pt_marker.action = Marker.ADD
+                #     pt_marker.pose.position.x = float(pt[0])
+                #     pt_marker.pose.position.y = float(pt[1])
+                #     pt_marker.pose.position.z = 0.05
+                #     pt_marker.scale.x = 0.04
+                #     pt_marker.scale.y = 0.04
+                #     pt_marker.scale.z = 0.04
+                #     pt_marker.color.a = 1.0
+                #     pt_marker.color.r = 0.0
+                #     pt_marker.color.g = 1.0
+                #     pt_marker.color.b = 1.0
+                #     marker_array.markers.append(pt_marker)
                 if cluster_points.shape[0] > max_cluster_size:
                     max_cluster_size = cluster_points.shape[0]
                     target_centroid = centroid
@@ -167,38 +175,49 @@ class ParkingLogicNode(Node):
             self.marker_pub.publish(marker_array)
             if target_centroid is not None:
                 self.parking_target = target_centroid
+                #self.get_logger().info(f'parking_target beállítva: {self.parking_target}')
+            else:
+                self.get_logger().info('NINCS érvényes target_centroid!')
+
+    def timer_test(self):
+        self.get_logger().info("TIMER TEST FUT!")
 
     def park_logic(self):
-        self.get_logger().info('PARK_LOGIC TIMER FUT!')
-        self.get_logger().info(f'park_logic: entering, parking_target={getattr(self, "parking_target", None)}, current_pose={self.current_pose}')
-        if not hasattr(self, 'parking_target') or self.parking_target is None or self.current_pose is None:
-            self.get_logger().info('park_logic: return, missing data!')
-            return
+        print("PARK_LOGIC FUT", self.current_pose, getattr(self, "parking_target", None))
+        try:
+            self.get_logger().info('PARK_LOGIC TIMER FUT!')
+            self.get_logger().info(f'park_logic: entering, parking_target={getattr(self, "parking_target", None)}, current_pose={self.current_pose}')
+            if not hasattr(self, 'parking_target') or self.parking_target is None or self.current_pose is None:
+                self.get_logger().info('park_logic: return, missing data!')
+                return
 
-        dx = self.parking_target[0] - self.current_pose.position.x
-        dy = self.parking_target[1] - self.current_pose.position.y
-        distance = math.hypot(dx, dy)
-        angle_to_target = math.atan2(dy, dx)
-        # Quaternion -> yaw
-        q = self.current_pose.orientation
-        siny_cosp = 2 * (q.w * q.z + q.x * q.y)
-        cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
-        yaw = math.atan2(siny_cosp, cosy_cosp)
-        angle_diff = angle_to_target - yaw
+            dx = self.parking_target[0] - self.current_pose.position.x
+            dy = self.parking_target[1] - self.current_pose.position.y
+            distance = math.hypot(dx, dy)
+            angle_to_target = math.atan2(dy, dx)
+            # Quaternion -> yaw
+            q = self.current_pose.orientation
+            siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+            cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+            yaw = math.atan2(siny_cosp, cosy_cosp)
+            angle_diff = angle_to_target - yaw
 
-        twist = Twist()
-        if abs(angle_diff) > 0.1:
-            twist.angular.z = 0.5 * np.sign(angle_diff)
-            twist.linear.x = 0.0
-        elif distance > 0.1:
-            twist.angular.z = 0.0
-            twist.linear.x = 0.15
-        else:
-            twist.angular.z = 0.0
-            twist.linear.x = 0.0
-            self.get_logger().info('Centroidhoz beállt!')
-        self.get_logger().info(f'park_logic: parking_target={self.parking_target}, current_pose={self.current_pose}')
-        self.cmd_vel_pub.publish(twist)
+            twist = Twist()
+            if abs(angle_diff) > 0.1:
+                twist.angular.z = 0.5 * np.sign(angle_diff)
+                twist.linear.x = 0.0
+            elif distance > 0.1:
+                twist.angular.z = 0.0
+                twist.linear.x = 0.15
+            else:
+                twist.angular.z = 0.0
+                twist.linear.x = 0.0
+                self.get_logger().info('Centroidhoz beállt!')
+            self.get_logger().info(f'park_logic: parking_target={self.parking_target}, current_pose={self.current_pose}')
+            self.cmd_vel_pub.publish(twist)
+        except Exception as e:
+            self.get_logger().error(f'park_logic exception: {e}')
+        self.get_logger().info(f'park_logic_timer: {self.park_logic_timer}, park_logic: {self.park_logic}')
 
 def main(args=None):
     rclpy.init(args=args)
