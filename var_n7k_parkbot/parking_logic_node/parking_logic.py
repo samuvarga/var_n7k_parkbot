@@ -24,6 +24,8 @@ class ParkingLogicNode(Node):
         self.target_distance = 1.5  # ennyi méterre parkoljon le
         self.obstacle_threshold = 0.5  # ha közelebb van akadály, megáll
 
+        self.get_logger().info('ParkingLogicNode init kész, timer elindítva')
+
     def odom_callback(self, msg):
         self.current_pose = msg.pose.pose
 
@@ -73,13 +75,15 @@ class ParkingLogicNode(Node):
 
         # Ha két oldalfal van, de elöl nincs pont (bejárat), akkor U-alakú parkoló
         if len(right_points) > 10 and len(entrance_points) < 3:
-            self.get_logger().info('U alakú parkolóhelyet találtam jobbra!')
-            
+            if not hasattr(self, "parking_detected") or not self.parking_detected:
+                self.get_logger().info('U alakú parkolóhelyet találtam jobbra!')
+                self.parking_detected = True
+        # NE állítsd vissza False-ra, ha egyszer megtalálta!
 
     def park_logic(self):
-        self.get_logger().info('park_logic timer meghívva')
+        self.get_logger().info('PARK_LOGIC FUT')
         self.get_logger().info(
-            f'park_logic fut | target_found={self.target_found} | right_points_len={getattr(self, "right_points_len", None)} | entrance_points_len={getattr(self, "entrance_points_len", None)}'
+            f'park_logic fut | target_found={self.target_found} | parking_detected={getattr(self, "parking_detected", None)}'
         )
         if self.current_pose is None or self.lidar_data is None:
             self.get_logger().info('Nincs aktuális pozíció vagy LIDAR adat!')
@@ -88,25 +92,28 @@ class ParkingLogicNode(Node):
         min_front, min_left, min_right, min_right_front, min_right_side = self.lidar_data
         twist = Twist()
 
-        if not self.target_found:
-            if hasattr(self, "right_points_len") and hasattr(self, "entrance_points_len"):
-                self.get_logger().info(
-                    f'U-hely keresés: right_points_len={self.right_points_len}, entrance_points_len={self.entrance_points_len}'
-                )
-                if self.right_points_len > 100 and self.entrance_points_len < 350:
-                    self.get_logger().info('U alakú parkolóhelyet találtam, odafordulok!')
-                    twist.angular.z = -0.5
-                    self.target_found = True
-                else:
-                    self.get_logger().info('Nincs U alakú parkoló, keresek tovább...')
-                    twist.angular.z = 0.5
-            else:
-                self.get_logger().info('Nincs right_points_len vagy entrance_points_len attribútum!')
-                twist.angular.z = 0.5
+        # 1. Keresés: forogjon, amíg nem talál parkolóhelyet
+        if not hasattr(self, "parking_detected") or not self.parking_detected:
+            self.get_logger().info('Parkolóhely keresése...')
+            twist.angular.z = 0.5
+            twist.linear.x = 0.0
+
+        # 2. Befordulás: ha megtalálta, forogjon be
+        elif not self.target_found:
+            self.get_logger().info('Parkolóhely megvan, befordulok!')
+            twist.angular.z = -0.5
+            twist.linear.x = 0.0
+            if min_front is not None and min_front < 0.8:
+                self.get_logger().info('Befordultam, indulhat a parkolás!')
+                twist.angular.z = 0.0
+                self.target_found = True
+
+        # 3. Parkolás: menjen előre, amíg nincs akadály
         else:
             self.get_logger().info(f'Parkolás: min_front={min_front}')
             if min_front is not None and min_front > self.obstacle_threshold:
                 twist.linear.x = 0.15
+                twist.angular.z = 0.0
             else:
                 self.get_logger().info('Beparkoltam!')
                 twist.linear.x = 0.0
