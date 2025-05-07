@@ -54,6 +54,11 @@
             <uri>file:///opt/ros/humble/share/turtlebot3_description/meshes/bases/burger_base.stl</uri>
           </mesh>
         </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse> <!-- szürkés szín -->
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
       </visual>
       <visual name='base_footprint_fixed_joint_lump__base_scan_visual_1'>
         <pose>-0.032 0 0.182 0 -0 0</pose>
@@ -63,6 +68,11 @@
             <uri>file:///opt/ros/humble/share/turtlebot3_description/meshes/sensors/lds.stl</uri>
           </mesh>
         </geometry>
+        <material>
+          <ambient>0.2 0.2 0.2 1</ambient>
+          <diffuse>0.4 0.4 0.4 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
       </visual>
     </link>
     <joint name='wheel_left_joint' type='revolute'>
@@ -112,6 +122,11 @@
             <uri>file:///opt/ros/humble/share/turtlebot3_description/meshes/wheels/left_tire.stl</uri>
           </mesh>
         </geometry>
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse> <!-- fekete -->
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
       </visual>
     </link>
     <joint name='wheel_right_joint' type='revolute'>
@@ -161,6 +176,11 @@
             <uri>file:///opt/ros/humble/share/turtlebot3_description/meshes/wheels/right_tire.stl</uri>
           </mesh>
         </geometry>
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse> <!-- fekete -->
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
       </visual>
     </link>
     <!-- LIDAR külön linken, gamma mintára -->
@@ -183,6 +203,11 @@
             <size>0.05 0.05 0.05</size>
           </box>
         </geometry>
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse> <!-- fekete (lidar kocka) -->
+          <specular>0.1 0.1 0.1 1</specular>
+        </material>
       </visual>
       <sensor name="ouster" type="gpu_lidar">
         <topic>/model/turtlebot3/scan</topic>
