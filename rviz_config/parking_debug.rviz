@@ -155,6 +155,19 @@ Visualization Manager:
               {}
       Update Interval: 0
       Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Namespaces:
+        cluster_points_0: true
+        parking_spots: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /model/turtlebot3/parking_markers
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -237,5 +250,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 307
-  Y: 315
+  X: 249
+  Y: 294
