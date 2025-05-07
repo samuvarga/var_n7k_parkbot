@@ -150,25 +150,25 @@ class ParkingLogicNode(Node):
                 marker_array.markers.append(marker)
 
                 # cyan kis gömbök a klaszter pontjaira
-                # for j, pt in enumerate(cluster_points):
-                #     pt_marker = Marker()
-                #     pt_marker.header.frame_id = "turtlebot3/base_footprint"
-                #     pt_marker.header.stamp = self.get_clock().now().to_msg()
-                #     pt_marker.ns = f"cluster_points_{cluster_id}"
-                #     pt_marker.id = j
-                #     pt_marker.type = Marker.SPHERE
-                #     pt_marker.action = Marker.ADD
-                #     pt_marker.pose.position.x = float(pt[0])
-                #     pt_marker.pose.position.y = float(pt[1])
-                #     pt_marker.pose.position.z = 0.05
-                #     pt_marker.scale.x = 0.04
-                #     pt_marker.scale.y = 0.04
-                #     pt_marker.scale.z = 0.04
-                #     pt_marker.color.a = 1.0
-                #     pt_marker.color.r = 0.0
-                #     pt_marker.color.g = 1.0
-                #     pt_marker.color.b = 1.0
-                #     marker_array.markers.append(pt_marker)
+                for j, pt in enumerate(cluster_points):
+                    pt_marker = Marker()
+                    pt_marker.header.frame_id = "turtlebot3/base_footprint"
+                    pt_marker.header.stamp = self.get_clock().now().to_msg()
+                    pt_marker.ns = f"cluster_points_{cluster_id}"
+                    pt_marker.id = j
+                    pt_marker.type = Marker.SPHERE
+                    pt_marker.action = Marker.ADD
+                    pt_marker.pose.position.x = float(pt[0])
+                    pt_marker.pose.position.y = float(pt[1])
+                    pt_marker.pose.position.z = 0.05
+                    pt_marker.scale.x = 0.04
+                    pt_marker.scale.y = 0.04
+                    pt_marker.scale.z = 0.04
+                    pt_marker.color.a = 1.0
+                    pt_marker.color.r = 0.0
+                    pt_marker.color.g = 1.0
+                    pt_marker.color.b = 1.0
+                    marker_array.markers.append(pt_marker)
                 if cluster_points.shape[0] > max_cluster_size:
                     max_cluster_size = cluster_points.shape[0]
                     target_centroid = centroid
