@@ -15,6 +15,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 class ParkingLogicNode(Node):
     def __init__(self):
+        print("KONSTRUKTOR ELEJE")
         super().__init__('parking_logic_node')
         self.odom_sub = self.create_subscription(Odometry, '/model/turtlebot3/odometry', self.odom_callback, 10)
         self.lidar_sub = self.create_subscription(PointCloud2, '/model/turtlebot3/scan/points', self.lidar_callback, 10)
@@ -24,7 +25,7 @@ class ParkingLogicNode(Node):
         self.current_pose = None
         self.lidar_data = None
         #teszt timer
-        self.test_timer = self.create_timer(0.5, lambda: self.get_logger().info('TIMER TESZT FUT!'))
+        #self.test_timer = self.create_timer(0.5, lambda: self.get_logger().info('TIMER TESZT FUT!'))
 
         self.parking_detected = False
         self.turning_timer = None
@@ -37,6 +38,7 @@ class ParkingLogicNode(Node):
 
         # MINDEN inicializáció után:
         self.park_logic_timer = self.create_timer(0.2, self.park_logic)
+        print("KONSTRUKTOR VÉGE", self.park_logic_timer, self.park_logic)
  
         # --- TESZT: robot folyamatosan forogjon indulás után ---
         # twist = Twist()
@@ -55,7 +57,6 @@ class ParkingLogicNode(Node):
             return
         points = []
         # self.get_logger().info('lidar_callback hívva')  # <-- EZT IS KOMMENTELD KI
-        # DEBUG log, optionally comment out for less spam
         # self.get_logger().info(f'Pontok száma szűrés előtt: {len(list(pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)))}')
         for p in pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True):
             x, y, z = p
@@ -91,8 +92,8 @@ class ParkingLogicNode(Node):
         self.lidar_data = (min_front, min_left, min_right, min_right_front, min_right_side)
 
         # Csak akkor detektáljon parkolót, ha tényleg van elég LIDAR adat ÉS azok szórása is életszerű!
-        if len(points) < 100 or np.std(points[:,0]) < 0.2 or np.std(points[:,1]) < 0.2:
-            return
+        # if len(points) < 100 or np.std(points[:,0]) < 0.2 or np.std(points[:,1]) < 0.2:
+        #     return
 
         # U-alakú parkoló detektálásához szükséges értékek eltárolása
         right_points = points[(points[:,1] < -0.6) & (np.abs(points[:,0]) < 0.6)]
@@ -224,7 +225,7 @@ def main(args=None):
     node = ParkingLogicNode()
     rclpy.spin(node)
     node.destroy_node()
-    rclpy.shutdown()
+    rclpy.shutdown() 
 
 if __name__ == '__main__':
     main()

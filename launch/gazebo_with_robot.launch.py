@@ -76,7 +76,7 @@ def generate_launch_description():
     # Parkolási logika node
     parking_logic_node = Node(
         package='var_n7k_parkbot',
-        executable='parking_logic.py',
+        executable='parking_logic_node',
         name='parking_logic_node',
         output='screen',
         parameters=[{'use_sim_time': True}]
