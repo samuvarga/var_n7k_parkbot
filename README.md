@@ -102,6 +102,10 @@ flowchart TD
 
 Here you will find images of the running project, RViz, and the parking logic results.
 
+![Simulation world](img/world.png)
+![LIDAR data in RViz](img/lidar.png)
+![Detected clusters](img/cluster.png)
+
 <!--
 Example (add your images later, e.g. in docs/img/):
 
@@ -211,10 +215,14 @@ flowchart TD
 
 ## Képek / Screenshots
 
-Itt lesznek majd a projekt futásáról, RViz-ről és a parkolási logikáról készült képek.
+Itt láthatók a projekt futásáról, az RViz-ről és a parkolási logika eredményeiről készült képek.
+
+![Szimulációs világ](img/world.png)
+![LIDAR adatok az RViz-ben](img/lidar.png)
+![Detektált klaszterek](img/cluster.png)
 
 <!--
-Példa (később töltsd fel a képeket a repo-ba, pl. docs/img/ alatt):
+Példa (később tölts fel további képeket a repo-ba, pl. docs/img/ alatt):
 
 ![RViz LIDAR view](docs/img/rviz_lidar.png)
 ![Detected parking spot](docs/img/parking_spot.png)
