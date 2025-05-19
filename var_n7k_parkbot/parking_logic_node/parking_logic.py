@@ -174,9 +174,10 @@ class ParkingLogicNode(Node):
                     target_centroid = centroid
 
             self.marker_pub.publish(marker_array)
-            if target_centroid is not None:
+            if target_centroid is not None and not hasattr(self, "parking_target_fixed"):
                 self.parking_target = target_centroid
-                #self.get_logger().info(f'parking_target beállítva: {self.parking_target}')
+                self.parking_target_fixed = True
+                self.get_logger().info(f'parking_target beállítva: {self.parking_target}')
             else:
                 self.get_logger().info('NINCS érvényes target_centroid!')
 

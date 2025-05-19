@@ -11,6 +11,7 @@ Panels:
         - /RobotModel1/Description Topic1
         - /PointCloud21
         - /TF1
+        - /MarkerArray1
       Splitter Ratio: 0.5
     Tree Height: 555
   - Class: rviz_common/Selection
@@ -109,7 +110,7 @@ Visualization Manager:
       Class: rviz_default_plugins/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
-      Decay Time: 0.009999999776482582
+      Decay Time: 0
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
@@ -159,8 +160,7 @@ Visualization Manager:
       Enabled: true
       Name: MarkerArray
       Namespaces:
-        cluster_points_0: true
-        parking_spots: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -250,5 +250,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 441
-  Y: 334
+  X: 409
+  Y: 302

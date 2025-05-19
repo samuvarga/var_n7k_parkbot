@@ -74,13 +74,13 @@ def generate_launch_description():
     )
 
     # Parkolási logika node
-    parking_logic_node = Node(
-        package='var_n7k_parkbot',
-        executable='parking_logic_node',
-        name='parking_logic_node',
-        output='screen',
-        parameters=[{'use_sim_time': True}]
-    )
+    # parking_logic_node = Node(
+    #     package='var_n7k_parkbot',
+    #     executable='parking_logic_node',
+    #     name='parking_logic_node',
+    #     output='screen',
+    #     parameters=[{'use_sim_time': True}]
+    # )
 
     # RViz node
     rviz_node = Node(
@@ -110,5 +110,5 @@ def generate_launch_description():
         robot_state_publisher,
         rviz_node,
         static_tf_ouster,
-        parking_logic_node
+        # parking_logic_node
     ])
